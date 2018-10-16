@@ -1,4 +1,5 @@
 import lexer
+import sys
 
 
 class Parser:
@@ -9,12 +10,11 @@ class Parser:
 
 	def consume_token(self, token):
 
-		#print(self.current_token)
-
 		if self.current_token[0] == token:
 			self.current_token = self.lexer.get_token()
 		else:
-			print('ERROR. expected:', token, ', got:', self.current_token[0])
+			print('ERROR. expected:', token, ', got:', self.current_token[0], 'in line:', self.current_token[2])
+			sys.exit(0)
 
 	def __function(self):
 		self.__type()
@@ -71,7 +71,8 @@ class Parser:
 			self.current_token[0] == lexer.TokenTypeEnum.PRINT or \
 			self.current_token[0] == lexer.TokenTypeEnum.SCAN or \
 			self.current_token[0] == lexer.TokenTypeEnum.WHILE or \
-			self.current_token[0] == lexer.TokenTypeEnum.ABRECHAVE:
+			self.current_token[0] == lexer.TokenTypeEnum.ABRECHAVE or \
+			self.current_token[0] == lexer.TokenTypeEnum.RETURN:
 				self.__stmt()
 				self.__stmt_list()
 		else:
@@ -100,13 +101,19 @@ class Parser:
 			self.__bloco()
 		elif self.current_token[0] == lexer.TokenTypeEnum.BREAK:
 			self.consume_token( lexer.TokenTypeEnum.BREAK)
+			self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
 		elif self.current_token[0] == lexer.TokenTypeEnum.CONTINUE:
 			self.consume_token( lexer.TokenTypeEnum.CONTINUE)
+			self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
 		elif self.current_token[0] == lexer.TokenTypeEnum.FLOAT or \
 			self.current_token[0] == lexer.TokenTypeEnum.INT:
 			self.__declaration()
-		else:
+		elif self.current_token[0] == lexer.TokenTypeEnum.PTOEVIRGULA:
 			self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
+		else:
+			self.consume_token(lexer.TokenTypeEnum.RETURN)
+			self.__fator()
+			self.consume_token(lexer.TokenTypeEnum.PTOEVIRGULA)
 
 	# ---- Declaracoes
 	def __declaration(self):
@@ -155,8 +162,9 @@ class Parser:
 		if self.current_token[0] == lexer.TokenTypeEnum.SCAN:
 			self.consume_token( lexer.TokenTypeEnum.SCAN)
 			self.consume_token( lexer.TokenTypeEnum.ABREPAR)
-			# self.consume_token( lexer.TokenTypeEnum.IDENT)
-			self.__out_list()
+			self.consume_token( lexer.TokenTypeEnum.STRING)
+			self.consume_token( lexer.TokenTypeEnum.VIRGULA)
+			self.consume_token( lexer.TokenTypeEnum.IDENT)
 			self.consume_token( lexer.TokenTypeEnum.FECHAPAR)
 			self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
 		else:

@@ -15,8 +15,8 @@
    | <expr> ';'												OK
    | <ifStmt>												OK
    | <bloco>												OK
-   | 'break'												OK
-   | 'continue'												OK
+   | 'break' ';'											OK
+   | 'continue'	';'											OK
    | <declaration>											OK
    | ';' ;													OK
 

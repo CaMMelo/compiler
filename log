@@ -1,0 +1,251 @@
+(<TokenTypeEnum.INT: 9>, 'int', (7, 4))
+(<TokenTypeEnum.IDENT: 35>, 'main', (7, 10))
+(<TokenTypeEnum.ABREPAR: 29>, '(', (7, 12))
+(<TokenTypeEnum.FECHAPAR: 30>, ')', (7, 14))
+(<TokenTypeEnum.ABRECHAVE: 31>, '{', (8, 0))
+(<TokenTypeEnum.INT: 9>, 'int', (9, 5))
+(<TokenTypeEnum.IDENT: 35>, 'num', (9, 10))
+(<TokenTypeEnum.VIRGULA: 33>, ',', (9, 12))
+(<TokenTypeEnum.IDENT: 35>, 'div', (9, 17))
+(<TokenTypeEnum.VIRGULA: 33>, ',', (9, 19))
+(<TokenTypeEnum.IDENT: 35>, 'resto', (9, 26))
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (10, 0))
+(<TokenTypeEnum.SCAN: 12>, 'scan', (11, 6))
+(<TokenTypeEnum.ABREPAR: 29>, '(', (11, 8))
+(<TokenTypeEnum.STRING: 36>, '"Entre com o inteiro:"', (11, 31))
+(<TokenTypeEnum.VIRGULA: 33>, ',', (11, 33))
+(<TokenTypeEnum.IDENT: 35>, 'num', (11, 38))
+(<TokenTypeEnum.FECHAPAR: 30>, ')', (11, 40))
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (12, 0))
+(<TokenTypeEnum.PRINT: 10>, 'print', (14, 7))
+(<TokenTypeEnum.ABREPAR: 29>, '(', (14, 9))
+(<TokenTypeEnum.STRING: 36>, '"Fatorando...\\n"', (14, 26))
+(<TokenTypeEnum.FECHAPAR: 30>, ')', (14, 28))
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (15, 0))
+(<TokenTypeEnum.PRINT: 10>, 'print', (16, 7))
+(<TokenTypeEnum.ABREPAR: 29>, '(', (16, 9))
+(<TokenTypeEnum.IDENT: 35>, 'num', (16, 13))
+(<TokenTypeEnum.VIRGULA: 33>, ',', (16, 15))
+(<TokenTypeEnum.STRING: 36>, '" = "', (16, 22))
+(<TokenTypeEnum.FECHAPAR: 30>, ')', (16, 24))
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (17, 0))
+(<TokenTypeEnum.IDENT: 35>, 'num', (19, 5))
+(<TokenTypeEnum.ATRIB: 28>, '=', (19, 8))
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA
+(<TokenTypeEnum.PTOEVIRGULA: 34>, ';', (20, 0))
+ERROR. expected: TokenTypeEnum.ABREPAR , got: TokenTypeEnum.PTOEVIRGULA

@@ -14,6 +14,7 @@ class TokenTypeEnum(enum.Enum):
 	IF 				= enum.auto()	# 'if'
 	INT 			= enum.auto()	# 'int'
 	PRINT 			= enum.auto()	# 'print'
+	RETURN 			= enum.auto()	# 'return'
 	SCAN 			= enum.auto()	# 'scan'
 	WHILE 			= enum.auto()	# 'while'
 	# operadores lógicos
@@ -118,6 +119,7 @@ state_token[67] = TokenTypeEnum.NUMFLOAT
 state_token[69] = TokenTypeEnum.IDENT
 state_token[73] = TokenTypeEnum.STRING
 state_token[74] = TokenTypeEnum.DIFF
+state_token[80] = TokenTypeEnum.RETURN
 
 # dfa definition
 def set_transition(source, clist, target):
@@ -248,6 +250,14 @@ set_transition(40, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ12345678
 set_transition(41, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_', 69)
 set_transition(42, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_', 69)
 set_transition(43, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_', 69)
+
+set_transition(75, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_', 69)
+set_transition(76, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_', 69)
+set_transition(77, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_', 69)
+set_transition(78, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_', 69)
+set_transition(79, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_', 69)
+set_transition(80, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_', 69)
+
 dfa[1][ord('b')]  = 2
 dfa[1][ord('c')]  = 3
 dfa[1][ord('e')]  = 4
@@ -318,6 +328,13 @@ dfa[71] = [71 for i in range(0, 256)]
 dfa[71][ord('"')] = 73
 dfa[71][ord('\\')] = 72
 dfa[72] = [71 for i in range(0, 256)]
+
+dfa[1][ord('r')] = 75
+dfa[75][ord('e')] = 76
+dfa[76][ord('t')] = 77
+dfa[77][ord('u')] = 78
+dfa[78][ord('r')] = 79
+dfa[79][ord('n')] = 80
 
 
 # OBSERVAÇÕES:

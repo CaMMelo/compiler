@@ -12,6 +12,8 @@ int main() {
 	print("Fatorando...\n");
 	print(num, " = ");
 
+	(num + div) = resto + 10;
+
     // procura e imprime os fatores
     while (num > 1) {
         // encontra o menor fator
@@ -22,4 +24,6 @@ int main() {
 	    if (num > 1)
 	       print(" * ");
 	}
+
+	return 0;
 }
