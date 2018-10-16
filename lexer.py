@@ -35,11 +35,12 @@ class TokenTypeEnum(enum.Enum):
 	ATRIB 			= enum.auto()	# '='
 	# marcadores
 	ABREPAR 		= enum.auto()	# '('
-	FEHAPAR 		= enum.auto()	# ')'
+	FECHAPAR 		= enum.auto()	# ')'
 	ABRECHAVE 		= enum.auto()	# '{'
 	FECHACHAVE 		= enum.auto()	# '}'
 	VIRGULA 		= enum.auto()	# ','
 	PTOEVIRGULA		= enum.auto()	# ';'
+
 	IDENT 			= enum.auto()	# [a-zA-Z_][a-zA-Z0-9_]*
 	STRING 			= enum.auto()	# \"(\\.|[^\\"])*\"
 	NUMINT 			= enum.auto()	# [0-9]+
@@ -50,8 +51,73 @@ class TokenTypeEnum(enum.Enum):
 dfa = [[0 for k in range(0, 256)] for i in range(0, 200)]
 state_token = [TokenTypeEnum.ERROR, ] * 200
 
+state_token[2]  = TokenTypeEnum.IDENT
+state_token[3]  = TokenTypeEnum.IDENT
+state_token[4]  = TokenTypeEnum.IDENT
+state_token[5]  = TokenTypeEnum.IDENT
+state_token[6]  = TokenTypeEnum.IDENT
+state_token[7]  = TokenTypeEnum.IDENT
+state_token[8]  = TokenTypeEnum.IDENT
+state_token[9]  = TokenTypeEnum.IDENT
+state_token[10] = TokenTypeEnum.IDENT
+state_token[11] = TokenTypeEnum.IDENT
+state_token[12] = TokenTypeEnum.IDENT
+state_token[13] = TokenTypeEnum.IDENT
+state_token[14] = TokenTypeEnum.IDENT
+state_token[15] = TokenTypeEnum.IF
+state_token[16] = TokenTypeEnum.IDENT
+state_token[17] = TokenTypeEnum.IDENT
+state_token[18] = TokenTypeEnum.IDENT
+state_token[19] = TokenTypeEnum.IDENT
+state_token[20] = TokenTypeEnum.IDENT
+state_token[21] = TokenTypeEnum.IDENT
+state_token[22] = TokenTypeEnum.IDENT
+state_token[23] = TokenTypeEnum.IDENT
+state_token[24] = TokenTypeEnum.FOR
+state_token[25] = TokenTypeEnum.INT
+state_token[26] = TokenTypeEnum.IDENT
+state_token[27] = TokenTypeEnum.IDENT
+state_token[28] = TokenTypeEnum.IDENT
+state_token[29] = TokenTypeEnum.IDENT
+state_token[30] = TokenTypeEnum.IDENT
+state_token[31] = TokenTypeEnum.ELSE
+state_token[32] = TokenTypeEnum.IDENT
+state_token[33] = TokenTypeEnum.IDENT
+state_token[34] = TokenTypeEnum.SCAN
+state_token[35] = TokenTypeEnum.IDENT
+state_token[36] = TokenTypeEnum.BREAK
+state_token[37] = TokenTypeEnum.IDENT
+state_token[38] = TokenTypeEnum.FLOAT
+state_token[39] = TokenTypeEnum.PRINT
+state_token[40] = TokenTypeEnum.WHILE
+state_token[41] = TokenTypeEnum.IDENT
+state_token[42] = TokenTypeEnum.IDENT
+state_token[43] = TokenTypeEnum.CONTINUE
+state_token[44] = TokenTypeEnum.SOMA
+state_token[45] = TokenTypeEnum.SUBT
+state_token[46] = TokenTypeEnum.MULT
+state_token[47] = TokenTypeEnum.DIV
+state_token[48] = TokenTypeEnum.MODU
+state_token[49] = TokenTypeEnum.ATRIB
+state_token[50] = TokenTypeEnum.ABREPAR
+state_token[51] = TokenTypeEnum.FECHAPAR
+state_token[52] = TokenTypeEnum.ABRECHAVE
+state_token[53] = TokenTypeEnum.FECHACHAVE
+state_token[54] = TokenTypeEnum.VIRGULA
+state_token[55] = TokenTypeEnum.PTOEVIRGULA
+state_token[56] = TokenTypeEnum.NOT
+state_token[57] = TokenTypeEnum.LT
+state_token[58] = TokenTypeEnum.GT
+state_token[61] = TokenTypeEnum.LTEQ
+state_token[62] = TokenTypeEnum.GTEQ
+state_token[63] = TokenTypeEnum.EQUAL
+state_token[64] = TokenTypeEnum.AND
+state_token[65] = TokenTypeEnum.OR
+state_token[66] = TokenTypeEnum.NUMINT
+state_token[67] = TokenTypeEnum.NUMFLOAT
 state_token[69] = TokenTypeEnum.IDENT
 state_token[73] = TokenTypeEnum.STRING
+state_token[74] = TokenTypeEnum.DIFF
 
 # dfa definition
 def set_transition(source, clist, target):
@@ -207,6 +273,7 @@ dfa[1][ord('<')]  = 57
 dfa[1][ord('>')]  = 58
 dfa[1][ord('&')]  = 59
 dfa[1][ord('|')]  = 60
+dfa[56][ord('!')]  = 74
 dfa[57][ord('=')]  = 61
 dfa[58][ord('=')]  = 62
 dfa[49][ord('=')]  = 63
@@ -221,7 +288,7 @@ dfa[6][ord('f')]  = 15
 dfa[6][ord('n')]  = 16
 dfa[7][ord('r')]  = 17
 dfa[8][ord('c')]  = 18
-dfa[9][ord('n')]  = 19
+dfa[9][ord('h')]  = 19
 dfa[10][ord('e')] = 20
 dfa[11][ord('n')] = 21
 dfa[12][ord('s')] = 22
