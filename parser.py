@@ -14,7 +14,7 @@ class Parser:
 			self.current_token = self.lexer.get_token()
 		else:
 			print('ERROR. expected:', token, ', got:', self.current_token[0], 'in line:', self.current_token[2])
-			sys.exit(0)
+			sys.exit(-1)
 
 	def __function(self):
 		self.__type()
@@ -225,19 +225,23 @@ class Parser:
 		self.__atrib()
 
 	def __atrib(self):
-		self.__or()
-		self.__resto_atrib()
+		a = self.__or()
+		b = self.__resto_atrib()
+		if not(a or b):
+			print("ATRIBUIÇÃO INVALIDA")
+			sys.exit(-1)
 
 	def __resto_atrib(self):
 		if self.current_token[0] == lexer.TokenTypeEnum.ATRIB:
 			self.consume_token( lexer.TokenTypeEnum.ATRIB)
 			self.__atrib()
 		else:
-			pass
+			return True
+
+		return False
 
 	def __or(self):
-		self.__and()
-		self.__resto_or()
+		return (self.__and() and self.__resto_or())
 
 	def __resto_or(self):
 		if self.current_token[0] == lexer.TokenTypeEnum.OR:
@@ -245,11 +249,12 @@ class Parser:
 			self.__and()
 			self.__resto_or()
 		else:
-			pass
+			return True
+
+		return False
 
 	def __and(self):
-		self.__not()
-		self.__resto_and()
+		return (self.__not() and self.__resto_and())
 
 	def __resto_and(self):
 		if self.current_token[0] == lexer.TokenTypeEnum.AND:
@@ -257,18 +262,21 @@ class Parser:
 			self.__not()
 			self.__resto_and()
 		else:
-			pass
+			return True
+
+		return False
 
 	def __not(self):
 		if self.current_token[0] == lexer.TokenTypeEnum.NOT:
 			self.consume_token( lexer.TokenTypeEnum.NOT)
 			self.__not()
 		else:
-			self.__rel()
+			return self.__rel()
+
+		return False
 
 	def __rel(self):
-		self.__add()
-		self.__resto_rel()
+		return (self.__add() and self.__resto_rel())
 
 	def __resto_rel(self):
 		if self.current_token[0] == lexer.TokenTypeEnum.EQUAL:
@@ -290,11 +298,12 @@ class Parser:
 			self.consume_token( lexer.TokenTypeEnum.LTEQ)
 			self.__add()
 		else:
-			pass
+			return True
+
+		return False
 
 	def __add(self):
-		self.__mult()
-		self.__resto_add()
+		return (self.__mult() and self.__resto_add())
 
 	def __resto_add(self):
 		if self.current_token[0] == lexer.TokenTypeEnum.SOMA:
@@ -306,11 +315,11 @@ class Parser:
 			self.__mult()
 			self.__resto_add()
 		else:
-			pass
+			return True
+		return False
 
 	def __mult(self):
-		self.__uno()
-		self.__resto_mult()
+		return (self.__uno() and self.__resto_mult())
 
 	def __resto_mult(self):
 		if self.current_token[0] == lexer.TokenTypeEnum.MULT:
@@ -326,7 +335,9 @@ class Parser:
 			self.__uno()
 			self.__resto_mult()
 		else:
-			pass
+			return True
+
+		return False
 
 	def __uno(self):
 		if self.current_token[0] == lexer.TokenTypeEnum.SOMA:
@@ -336,7 +347,9 @@ class Parser:
 			self.consume_token( lexer.TokenTypeEnum.SUBT)
 			self.__uno()
 		else:
-			self.__fator()
+			return self.__fator()
+
+		return False
 
 	def __fator(self):
 		if self.current_token[0] == lexer.TokenTypeEnum.NUMINT:
@@ -345,10 +358,13 @@ class Parser:
 			self.consume_token( lexer.TokenTypeEnum.NUMFLOAT)
 		elif self.current_token[0] == lexer.TokenTypeEnum.IDENT:
 			self.consume_token( lexer.TokenTypeEnum.IDENT)
+			return True
 		else:
 			self.consume_token( lexer.TokenTypeEnum.ABREPAR)
 			self.__atrib()
 			self.consume_token( lexer.TokenTypeEnum.FECHAPAR)
+
+		return False
 
 	def parse(self):
 		self.current_token = self.lexer.get_token()
