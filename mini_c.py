@@ -1,7 +1,12 @@
-from lexer import Lexer
+from lexer import Lexer, TokenTypeEnum
 
 
 if __name__ == '__main__':
 	lexer = Lexer('input.file')
-	print(lexer.get_token())
-	print(lexer.get_token())
+
+	token = lexer.get_token()
+
+	while token[0] != TokenTypeEnum.EOF:
+		print(token)
+		token = lexer.get_token()
+	print(token)
