@@ -1,371 +1,396 @@
-import lexer
-import sys
+from first_follow import first
+from lexer import Token, Lexer
+
+
+class ParseError(Exception):
+
+    def __init__(self, message, line, col):
+        super().__init__(message)
+        self.line = line
+        self.col = col
+    
+    def __str__(self):
+
+        return f'ERROR: ({self.line}, {self.col}): ' + super().__str__()
 
 
 class Parser:
 
-	def __init__(self, filepath):
+    def __init__(self, filepath):
+        
+        self.lexer = Lexer(filepath)
+    
+    def consume_token(self, token):
 
-		self.lexer = lexer.Lexer(filepath)
+        if self.current_token == token:
+            self.current_token = self.lexer.get_token()
+        else:
+            raise ParseError(f'expected {token}, but got "{self.lexer.lexeme}".', 
+                self.lexer.x, self.lexer.y)
+    
+    @property
+    def function(self):
+        self.type
+        self.consume_token(Token.IDENT)
+        self.consume_token(Token.ABREPAR)
+        self.arg_list
+        self.consume_token(Token.FECHAPAR)
+        self.bloco
+    
+    @property
+    def arg_list(self):
+        if self.current_token in first['arg']:
+            self.arg
+            self.resto_arg_list
+        else:
+            pass
+    
+    @property
+    def arg(self):
+        self.type
+        self.consume_token(Token.IDENT)
+    
+    @property
+    def resto_arg_list(self):
+        if self.current_token == Token.VIRGULA:
+            self.consume_token(Token.VIRGULA)
+            self.arg_list
+        else:
+            pass
 
-	def consume_token(self, token):
+    @property
+    def type(self):
+        if self.current_token == Token.INT:
+            self.consume_token(Token.INT)
+        else:
+            self.consume_token(Token.FLOAT)
+    
+    @property
+    def bloco(self):
+        self.consume_token(Token.ABRECHAVE)
+        self.stmt_list
+        self.consume_token(Token.FECHACHAVE)
+    
+    @property
+    def stmt_list(self):
+        if self.current_token in first['stmt']:
+            self.stmt
+            self.stmt_list
+        else:
+            pass
+    
+    @property
+    def stmt(self):
+        if self.current_token in first['for_stmt']:
+            self.for_stmt
+        elif self.current_token in first['io_stmt']:
+            self.io_stmt
+        elif self.current_token in first['while_stmt']:
+            self.while_stmt
+        elif self.current_token in first['expr']:
+            self.expr
+            self.consume_token(Token.PTOEVIRGULA)
+        elif self.current_token in first['if_stmt']:
+            self.if_stmt
+        elif self.current_token in first['bloco']:
+            self.bloco
+        elif self.current_token in first['declaration']:
+            self.declaration
+        elif self.current_token == Token.BREAK:
+            self.consume_token(Token.BREAK)
+            self.consume_token(Token.PTOEVIRGULA)
+        elif self.current_token == Token.CONTINUE:
+            self.consume_token(Token.CONTINUE)
+            self.consume_token(Token.PTOEVIRGULA)
+        elif self.current_token == Token.RETURN:
+            self.consume_token(Token.RETURN)
+            self.fator
+            self.consume_token(Token.PTOEVIRGULA)
+        else:
+            self.consume_token(Token.PTOEVIRGULA)
+    
+    @property
+    def declaration(self):
+        self.type
+        self.ident_list
+        self.consume_token(Token.PTOEVIRGULA)
+    
+    @property
+    def ident_list(self):
+        
+        self.consume_token(Token.IDENT)
+        self.resto_ident_list
+    
+    @property
+    def resto_ident_list(self):
+        if self.current_token == Token.VIRGULA:
+            self.consume_token(Token.VIRGULA)
+            self.consume_token(Token.IDENT)
+            self.resto_ident_list
+        else:
+            pass
+    
+    @property
+    def for_stmt(self):
+        self.consume_token(Token.FOR)
+        self.consume_token(Token.ABREPAR)
+        self.opt_expr
+        self.consume_token(Token.PTOEVIRGULA)
+        self.opt_expr
+        self.consume_token(Token.PTOEVIRGULA)
+        self.opt_expr
+        self.consume_token(Token.FECHAPAR)
+        self.stmt
+    
+    @property
+    def opt_expr(self):
+        if self.current_token in first['expr']:
+            self.expr
+        else:
+            pass
+    
+    @property
+    def io_stmt(self):
+        if self.current_token == Token.SCAN:
+            self.consume_token(Token.SCAN)
+            self.consume_token(Token.ABREPAR)
+            self.consume_token(Token.STRING)
+            self.consume_token(Token.VIRGULA)
+            self.consume_token(Token.IDENT)
+            self.consume_token(Token.FECHAPAR)
+            self.consume_token(Token.PTOEVIRGULA)
+        else:
+            self.consume_token(Token.PRINT)
+            self.consume_token(Token.ABREPAR)
+            self.out_list
+            self.consume_token(Token.FECHAPAR)
+            self.consume_token(Token.PTOEVIRGULA)
+    
+    @property
+    def out_list(self):
+        self.out
+        self.resto_out_list
+    
+    @property
+    def out(self):
+        if self.current_token == Token.STRING:
+            self.consume_token(Token.STRING)
+        elif self.current_token == Token.IDENT:
+            self.consume_token(Token.IDENT)
+        elif self.current_token == Token.NUMINT:
+            self.consume_token(Token.NUMINT)
+        else:
+            self.consume_token(Token.NUMFLOAT)
+    
+    @property
+    def resto_out_list(self):
+        
+        if self.current_token == Token.VIRGULA:
+            self.consume_token(Token.VIRGULA)
+            self.out
+            self.resto_out_list
+        else:
+            pass
+    
+    @property
+    def while_stmt(self):
+        self.consume_token(Token.WHILE)
+        self.consume_token(Token.ABREPAR)
+        self.expr
+        self.consume_token(Token.FECHAPAR)
+        self.stmt
+    
+    @property
+    def if_stmt(self):
+        self.consume_token(Token.IF)
+        self.consume_token(Token.ABREPAR)
+        self.expr
+        self.consume_token(Token.FECHAPAR)
+        self.stmt
+        self.else_part
+    
+    @property
+    def else_part(self):
+        if self.current_token == Token.ELSE:
+            self.consume_token(Token.ELSE)
+            self.stmt
+        else:
+            pass
+    
+    @property
+    def expr(self):
+        self.atrib
+    
+    @property
+    def atrib(self):
+        a = self.or_
+        b = self.resto_atrib
+        if not(a or b):
+            raise ParseError(f'missing lvalue!', self.lexer.x, self.lexer.y)
+    
+    @property
+    def resto_atrib(self):
+        if self.current_token == Token.ATRIB:
+            self.consume_token(Token.ATRIB)
+            self.atrib
+        else:
+            return True
+        return False
+    
+    @property
+    def or_(self):
+        a = self.and_
+        b = self.resto_or
+        return a and b
 
-		if self.current_token[0] == token:
-			self.current_token = self.lexer.get_token()
-		else:
-			print('ERROR. expected:', token, ', got:', self.current_token[0], 'in line:', self.current_token[2])
-			sys.exit(-1)
+    @property
+    def resto_or(self):
+        if self.current_token == Token.OR:
+            self.consume_token(Token.OR)
+            self.and_
+            self.resto_or
+        else:
+            return True
+        return False
+    
+    @property
+    def and_(self):
+        a = self.not_
+        b = self.resto_and
+        return a and b
+    
+    @property
+    def resto_and(self):
+        if self.current_token == Token.AND:
+            self.consume_token(Token.AND)
+            self.not_
+            self.resto_and
+        else:
+            return True
+        return False
+    
+    @property
+    def not_(self):
+        if self.current_token == Token.NOT:
+            self.consume_token(Token.NOT)
+            self.not_
+        else:
+            return self.rel
+        return False
+    
+    @property
+    def rel(self):
+        a = self.add
+        b = self.resto_rel
+        return a and b
+    
+    @property
+    def resto_rel(self):
+        if self.current_token == Token.EQUAL:
+            self.consume_token(Token.EQUAL)
+            self.add
+        elif self.current_token == Token.DIFF:
+            self.consume_token(Token.DIFF)
+            self.add
+        elif self.current_token == Token.GT:
+            self.consume_token(Token.GT)
+            self.add
+        elif self.current_token == Token.GTEQ:
+            self.consume_token(Token.GTEQ)
+            self.add
+        elif self.current_token == Token.LT:
+            self.consume_token(Token.GT)
+            self.add
+        elif self.current_token == Token.LTEQ:
+            self.consume_token(Token.GTEQ)
+            self.add
+        else:
+            return True
+        return False
+    
+    @property
+    def add(self):
+        a = self.mult
+        b = self.resto_add
+        return a and b
+    
+    @property
+    def resto_add(self):
 
-	def __function(self):
-		self.__type()
-		self.consume_token( lexer.TokenTypeEnum.IDENT)
-		self.consume_token( lexer.TokenTypeEnum.ABREPAR)
-		self.__arg_list()
-		self.consume_token( lexer.TokenTypeEnum.FECHAPAR)
-		self.__bloco()
+        if self.current_token == Token.SOMA:
+            self.consume_token(Token.SOMA)
+            self.mult
+            self.resto_add
+        elif self.current_token == Token.SUBT:
+            self.consume_token(Token.SUBT)
+            self.mult
+            self.resto_add
+        else:
+            return True
+        return False
+    
+    @property
+    def mult(self):
+        a = self.uno
+        b = self.resto_mult
+        return a and b
+    
+    @property
+    def resto_mult(self):
+        if self.current_token == Token.MULT:
+            self.consume_token(Token.MULT)
+            self.uno
+            self.resto_mult
+        elif self.current_token == Token.DIV:
+            self.consume_token(Token.DIV)
+            self.uno
+            self.resto_mult
+        elif self.current_token == Token.MODU:
+            self.consume_token(Token.MODU)
+            self.uno
+            self.resto_mult
+        else:
+            return True
+        return False
+    
+    @property
+    def uno(self):
+        if self.current_token == Token.SOMA:
+            self.consume_token(Token.SOMA)
+            self.uno
+        elif self.current_token == Token.SUBT:
+            self.consume_token(Token.SUBT)
+            self.uno
+        else:
+            return self.fator
+        return False
+    
+    @property
+    def fator(self):
+        if self.current_token == Token.NUMINT:
+            self.consume_token(Token.NUMINT)
+        elif self.current_token == Token.NUMFLOAT:
+            self.consume_token(Token.NUMFLOAT)
+        elif self.current_token == Token.IDENT:
+            self.consume_token(Token.IDENT)
+            return True
+        else:
+            self.consume_token(Token.ABREPAR)
+            self.atrib
+            self.consume_token(Token.FECHAPAR)
+        return False
+        
 
-	def __arg_list(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.INT or self.current_token[0] == lexer.TokenTypeEnum.FLOAT:
-			self.__arg()
-			self.__resto_arg_list()
-		else:
-			pass
+    def parse(self):
+        
+        try:
+            self.current_token = self.lexer.get_token()
+            self.function
+            self.consume_token(Token.EOF)
+        except ParseError as error:
+            print(error)
 
-	def __arg(self):
-		self.__type()
-		self.consume_token( lexer.TokenTypeEnum.IDENT)
 
-	def __resto_arg_list(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.VIRGULA:
-			self.consume_token( lexer.TokenTypeEnum.VIRGULA)
-			self.__arg_list()
-		else:
-			pass
-
-	def __type(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.INT:
-			self.consume_token( lexer.TokenTypeEnum.INT)
-		else:
-			self.consume_token( lexer.TokenTypeEnum.FLOAT)
-
-	def __bloco(self):
-		self.consume_token( lexer.TokenTypeEnum.ABRECHAVE)
-		self.__stmt_list()
-		self.consume_token( lexer.TokenTypeEnum.FECHACHAVE)
-
-	def __stmt_list(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.NOT or \
-			self.current_token[0] == lexer.TokenTypeEnum.ABREPAR or \
-			self.current_token[0] == lexer.TokenTypeEnum.SOMA or \
-			self.current_token[0] == lexer.TokenTypeEnum.SUBT or \
-			self.current_token[0] == lexer.TokenTypeEnum.PTOEVIRGULA or \
-			self.current_token[0] == lexer.TokenTypeEnum.IDENT or \
-			self.current_token[0] == lexer.TokenTypeEnum.NUMFLOAT or \
-			self.current_token[0] == lexer.TokenTypeEnum.NUMINT or \
-			self.current_token[0] == lexer.TokenTypeEnum.BREAK or \
-			self.current_token[0] == lexer.TokenTypeEnum.CONTINUE or \
-			self.current_token[0] == lexer.TokenTypeEnum.FLOAT or \
-			self.current_token[0] == lexer.TokenTypeEnum.FOR or \
-			self.current_token[0] == lexer.TokenTypeEnum.IF or \
-			self.current_token[0] == lexer.TokenTypeEnum.INT or \
-			self.current_token[0] == lexer.TokenTypeEnum.PRINT or \
-			self.current_token[0] == lexer.TokenTypeEnum.SCAN or \
-			self.current_token[0] == lexer.TokenTypeEnum.WHILE or \
-			self.current_token[0] == lexer.TokenTypeEnum.ABRECHAVE or \
-			self.current_token[0] == lexer.TokenTypeEnum.RETURN:
-				self.__stmt()
-				self.__stmt_list()
-		else:
-			pass
-
-	def __stmt(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.FOR:
-			self.__for_stmt()
-		elif self.current_token[0] == lexer.TokenTypeEnum.PRINT or \
-			self.current_token[0] == lexer.TokenTypeEnum.SCAN:
-			self.__io_stmt()
-		elif self.current_token[0] == lexer.TokenTypeEnum.WHILE:
-			self.__while_stmt()
-		elif self.current_token[0] == lexer.TokenTypeEnum.NOT or \
-			self.current_token[0] == lexer.TokenTypeEnum.ABREPAR or \
-			self.current_token[0] == lexer.TokenTypeEnum.SOMA or \
-			self.current_token[0] == lexer.TokenTypeEnum.SUBT or \
-			self.current_token[0] == lexer.TokenTypeEnum.IDENT or \
-			self.current_token[0] == lexer.TokenTypeEnum.NUMFLOAT or \
-			self.current_token[0] == lexer.TokenTypeEnum.NUMINT:
-				self.__expr()
-				self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
-		elif self.current_token[0] == lexer.TokenTypeEnum.IF:
-			self.__if_stmt()
-		elif self.current_token[0] == lexer.TokenTypeEnum.ABRECHAVE:
-			self.__bloco()
-		elif self.current_token[0] == lexer.TokenTypeEnum.BREAK:
-			self.consume_token( lexer.TokenTypeEnum.BREAK)
-			self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
-		elif self.current_token[0] == lexer.TokenTypeEnum.CONTINUE:
-			self.consume_token( lexer.TokenTypeEnum.CONTINUE)
-			self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
-		elif self.current_token[0] == lexer.TokenTypeEnum.FLOAT or \
-			self.current_token[0] == lexer.TokenTypeEnum.INT:
-			self.__declaration()
-		elif self.current_token[0] == lexer.TokenTypeEnum.PTOEVIRGULA:
-			self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
-		else:
-			self.consume_token(lexer.TokenTypeEnum.RETURN)
-			self.__fator()
-			self.consume_token(lexer.TokenTypeEnum.PTOEVIRGULA)
-
-	# ---- Declaracoes
-	def __declaration(self):
-		self.__type()
-		self.__ident_list()
-		self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
-
-	def __ident_list(self):
-		self.consume_token( lexer.TokenTypeEnum.IDENT)
-		self.__resto_ident_list()
-
-	def __resto_ident_list(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.VIRGULA:
-			self.consume_token( lexer.TokenTypeEnum.VIRGULA)
-			self.consume_token( lexer.TokenTypeEnum.IDENT)
-			self.__resto_ident_list()
-		else:
-			pass
-
-	# ---- For
-	def __for_stmt(self):
-		self.consume_token( lexer.TokenTypeEnum.FOR)
-		self.consume_token( lexer.TokenTypeEnum.ABREPAR)
-		self.__opt_expr()
-		self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
-		self.__opt_expr()
-		self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
-		self.__opt_expr()
-		self.consume_token( lexer.TokenTypeEnum.FECHAPAR)
-		self.__stmt()
-
-	def __opt_expr(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.NOT or \
-			self.current_token[0] == lexer.TokenTypeEnum.ABREPAR or \
-			self.current_token[0] == lexer.TokenTypeEnum.SOMA or \
-			self.current_token[0] == lexer.TokenTypeEnum.SUBT or \
-			self.current_token[0] == lexer.TokenTypeEnum.IDENT or \
-			self.current_token[0] == lexer.TokenTypeEnum.NUMFLOAT or \
-			self.current_token[0] == lexer.TokenTypeEnum.NUMINT:
-				self.__expr()
-		else:
-			pass
-
-	# ---- io
-	def __io_stmt(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.SCAN:
-			self.consume_token( lexer.TokenTypeEnum.SCAN)
-			self.consume_token( lexer.TokenTypeEnum.ABREPAR)
-			self.consume_token( lexer.TokenTypeEnum.STRING)
-			self.consume_token( lexer.TokenTypeEnum.VIRGULA)
-			self.consume_token( lexer.TokenTypeEnum.IDENT)
-			self.consume_token( lexer.TokenTypeEnum.FECHAPAR)
-			self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
-		else:
-			self.consume_token( lexer.TokenTypeEnum.PRINT)
-			self.consume_token( lexer.TokenTypeEnum.ABREPAR)
-			self.__out_list()
-			self.consume_token( lexer.TokenTypeEnum.FECHAPAR)
-			self.consume_token( lexer.TokenTypeEnum.PTOEVIRGULA)
-
-	def __out_list(self):
-		self.__out()
-		self.__resto_out_list()
-
-	def __out(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.STRING:
-			self.consume_token( lexer.TokenTypeEnum.STRING)
-		elif self.current_token[0] == lexer.TokenTypeEnum.IDENT:
-			self.consume_token( lexer.TokenTypeEnum.IDENT)
-		elif self.current_token[0] == lexer.TokenTypeEnum.NUMINT:
-			self.consume_token( lexer.TokenTypeEnum.NUMINT)
-		else:
-			self.consume_token( lexer.TokenTypeEnum.NUMFLOAT)
-
-	def __resto_out_list(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.VIRGULA:
-			self.consume_token( lexer.TokenTypeEnum.VIRGULA)
-			self.__out()
-			self.__resto_out_list()
-		else:
-			pass
-
-	# ---- while
-	def __while_stmt(self):
-		self.consume_token( lexer.TokenTypeEnum.WHILE)
-		self.consume_token( lexer.TokenTypeEnum.ABREPAR)
-		self.__expr()
-		self.consume_token( lexer.TokenTypeEnum.FECHAPAR)
-		self.__stmt()
-
-	# ---- if
-	def __if_stmt(self):
-		self.consume_token( lexer.TokenTypeEnum.IF)
-		self.consume_token( lexer.TokenTypeEnum.ABREPAR)
-		self.__expr()
-		self.consume_token( lexer.TokenTypeEnum.FECHAPAR)
-		self.__stmt()
-		self.__else_part()
-
-	def __else_part(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.ELSE:
-			self.consume_token( lexer.TokenTypeEnum.ELSE)
-			self.__stmt()
-		else:
-			pass
-
-	# ---- expressoes
-	def __expr(self):
-		self.__atrib()
-
-	def __atrib(self):
-		a = self.__or()
-		b = self.__resto_atrib()
-		if not(a or b):
-			print("ATRIBUIÇÃO INVALIDA")
-			sys.exit(-1)
-
-	def __resto_atrib(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.ATRIB:
-			self.consume_token( lexer.TokenTypeEnum.ATRIB)
-			self.__atrib()
-		else:
-			return True
-
-		return False
-
-	def __or(self):
-		return (self.__and() and self.__resto_or())
-
-	def __resto_or(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.OR:
-			self.consume_token( lexer.TokenTypeEnum.OR)
-			self.__and()
-			self.__resto_or()
-		else:
-			return True
-
-		return False
-
-	def __and(self):
-		return (self.__not() and self.__resto_and())
-
-	def __resto_and(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.AND:
-			self.consume_token( lexer.TokenTypeEnum.AND)
-			self.__not()
-			self.__resto_and()
-		else:
-			return True
-
-		return False
-
-	def __not(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.NOT:
-			self.consume_token( lexer.TokenTypeEnum.NOT)
-			self.__not()
-		else:
-			return self.__rel()
-
-		return False
-
-	def __rel(self):
-		return (self.__add() and self.__resto_rel())
-
-	def __resto_rel(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.EQUAL:
-			self.consume_token( lexer.TokenTypeEnum.EQUAL)
-			self.__add()
-		elif self.current_token[0] == lexer.TokenTypeEnum.DIFF:
-			self.consume_token( lexer.TokenTypeEnum.DIFF)
-			self.__add()
-		elif self.current_token[0] == lexer.TokenTypeEnum.GT:
-			self.consume_token( lexer.TokenTypeEnum.GT)
-			self.__add()
-		elif self.current_token[0] == lexer.TokenTypeEnum.GTEQ:
-			self.consume_token( lexer.TokenTypeEnum.GTEQ)
-			self.__add()
-		elif self.current_token[0] == lexer.TokenTypeEnum.LT:
-			self.consume_token( lexer.TokenTypeEnum.LT)
-			self.__add()
-		elif self.current_token[0] == lexer.TokenTypeEnum.LTEQ:
-			self.consume_token( lexer.TokenTypeEnum.LTEQ)
-			self.__add()
-		else:
-			return True
-
-		return False
-
-	def __add(self):
-		return (self.__mult() and self.__resto_add())
-
-	def __resto_add(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.SOMA:
-			self.consume_token( lexer.TokenTypeEnum.SOMA)
-			self.__mult()
-			self.__resto_add()
-		elif self.current_token[0] == lexer.TokenTypeEnum.SUBT:
-			self.consume_token( lexer.TokenTypeEnum.SUBT)
-			self.__mult()
-			self.__resto_add()
-		else:
-			return True
-		return False
-
-	def __mult(self):
-		return (self.__uno() and self.__resto_mult())
-
-	def __resto_mult(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.MULT:
-			self.consume_token( lexer.TokenTypeEnum.MULT)
-			self.__uno()
-			self.__resto_mult()
-		elif self.current_token[0] == lexer.TokenTypeEnum.DIV:
-			self.consume_token( lexer.TokenTypeEnum.DIV)
-			self.__uno()
-			self.__resto_mult()
-		elif self.current_token[0] == lexer.TokenTypeEnum.MODU:
-			self.consume_token( lexer.TokenTypeEnum.MODU)
-			self.__uno()
-			self.__resto_mult()
-		else:
-			return True
-
-		return False
-
-	def __uno(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.SOMA:
-			self.consume_token( lexer.TokenTypeEnum.SOMA)
-			self.__uno()
-		elif self.current_token[0] == lexer.TokenTypeEnum.SUBT:
-			self.consume_token( lexer.TokenTypeEnum.SUBT)
-			self.__uno()
-		else:
-			return self.__fator()
-
-		return False
-
-	def __fator(self):
-		if self.current_token[0] == lexer.TokenTypeEnum.NUMINT:
-			self.consume_token( lexer.TokenTypeEnum.NUMINT)
-		elif self.current_token[0] == lexer.TokenTypeEnum.NUMFLOAT:
-			self.consume_token( lexer.TokenTypeEnum.NUMFLOAT)
-		elif self.current_token[0] == lexer.TokenTypeEnum.IDENT:
-			self.consume_token( lexer.TokenTypeEnum.IDENT)
-			return True
-		else:
-			self.consume_token( lexer.TokenTypeEnum.ABREPAR)
-			self.__atrib()
-			self.consume_token( lexer.TokenTypeEnum.FECHAPAR)
-
-		return False
-
-	def parse(self):
-		self.current_token = self.lexer.get_token()
-		self.__function()
+if __name__ == '__main__':
+    parser = Parser('prog-exemplo.miniC')
+    parser.parse()
