@@ -183,12 +183,3 @@ class Lexer:
             self._x+=1
             self._y =1
         return c
-
-
-if __name__ == '__main__':
-
-    lexer = Lexer('prog-exemplo.miniC')
-    token = lexer.get_token()
-    while token != Token.EOF:
-        print(f'{token:20}, "{lexer.lexeme}"')
-        token = lexer.get_token()

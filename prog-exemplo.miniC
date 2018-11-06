@@ -5,12 +5,14 @@
 **==============================*/
 
 int main() {
+	
 	int num, div, resto;
 	scan("Entre com o inteiro:", num);
 	print("Fatorando...\n");
 	print(num, " = ");
 	num = (a - 10);
-    // procura e imprime os fatores
+    
+	// procura e imprime os fatores
     while (num > 1) {
         // encontra o menor fator
 	    for (div = 2; num % div; div = div + 1);
@@ -20,5 +22,6 @@ int main() {
 	    if (num > 1)
 	       print(" * ");
 	}
+	
 	return 0;
 }
