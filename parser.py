@@ -112,7 +112,7 @@ class Parser:
             if v not in self.symbol_table:
                 self.symbol_table[v] = tipo
             else:
-                raise ParseError(f'redefinition of var \'{v}\'', self.lexer.x, self.lexer.y)
+                raise ParseError(f'redefinition of symbol \'{v}\'', self.lexer.x, self.lexer.y)
     
     def ident_list(self):
 
@@ -352,7 +352,12 @@ class Parser:
         elif self.current_token == Token.NUMFLOAT:
             self.consume_token(Token.NUMFLOAT)
         elif self.current_token == Token.IDENT:
+            ident = self.lexer.lexeme
             self.consume_token(Token.IDENT)
+
+            if ident not in self.symbol_table:
+                raise ParseError(f'symbol \'{ident}\' was not defined.', self.lexer.x, self.lexer.y)
+
             return True
         else:
             self.consume_token(Token.ABREPAR)

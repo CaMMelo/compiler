@@ -10,7 +10,7 @@ int main() {
 	scan("Entre com o inteiro:", num);
 	print("Fatorando...\n");
 	print(num, " = ");
-	num = (a - 10);
+	num = (num - 10);
     
 	// procura e imprime os fatores
     while (num > 1) {
@@ -25,7 +25,7 @@ int main() {
 	       print(" * ");
 	}
 
-	int variavel;
+	// int variavel;
 	
 	return 0;
 }
