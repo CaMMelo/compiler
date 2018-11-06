@@ -10,7 +10,6 @@ class ParseError(Exception):
         self.col = col
     
     def __str__(self):
-
         return f'ERROR: ({self.line}, {self.col}): ' + super().__str__()
 
 
@@ -25,7 +24,7 @@ class Parser:
         if self.current_token == token:
             self.current_token = self.lexer.get_token()
         else:
-            raise ParseError(f'expected {token}, but got "{self.lexer.lexeme}".', 
+            raise ParseError(f'expected \'{token.value}\' but got \'{self.lexer.lexeme}\'.', 
                 self.lexer.x, self.lexer.y)
     
     @property
@@ -226,7 +225,7 @@ class Parser:
         a = self.or_
         b = self.resto_atrib
         if not(a or b):
-            raise ParseError(f'missing lvalue!', self.lexer.x, self.lexer.y)
+            raise ParseError(f'missing lvalue.', self.lexer.x, self.lexer.y)
     
     @property
     def resto_atrib(self):
@@ -382,15 +381,9 @@ class Parser:
         
 
     def parse(self):
-        
         try:
             self.current_token = self.lexer.get_token()
             self.function
             self.consume_token(Token.EOF)
         except ParseError as error:
             print(error)
-
-
-if __name__ == '__main__':
-    parser = Parser('prog-exemplo.miniC')
-    parser.parse()

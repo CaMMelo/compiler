@@ -4,47 +4,47 @@ from dfa import next_state, get_action, symbol
 
 class Token(enum.Enum):
 
-    EOF             = enum.auto()
+    EOF             = 'EOF'
 	# palavras chave
-    BREAK 			= enum.auto()	# 'break'
-    CONTINUE 		= enum.auto()	# 'continue'
-    ELSE 			= enum.auto()	# 'else'
-    FLOAT 			= enum.auto()	# 'float'
-    FOR 			= enum.auto()	# 'for'
-    IF 				= enum.auto()	# 'if'
-    INT 			= enum.auto()	# 'int'
-    PRINT 			= enum.auto()	# 'print'
-    RETURN 			= enum.auto()	# 'return'
-    SCAN 			= enum.auto()	# 'scan'
-    WHILE 			= enum.auto()	# 'while'
+    BREAK 			= 'break'
+    CONTINUE 		= 'continue'
+    ELSE 			= 'else'
+    FLOAT 			= 'float'
+    FOR 			= 'for'
+    IF 				= 'if'
+    INT 			= 'int'
+    PRINT 			= 'print'
+    RETURN 			= 'return'
+    SCAN 			= 'scan'
+    WHILE 			= 'while'
     # operadores lógicos
-    NOT 			= enum.auto()	# '!'
-    LT				= enum.auto()	# '<'
-    GT 				= enum.auto()	# '>'
-    LTEQ 			= enum.auto()	# '<='
-    GTEQ 			= enum.auto()	# '>='
-    OR 				= enum.auto()	# '||'
-    AND 			= enum.auto()	# '&&'
-    EQUAL 			= enum.auto()	# '=='
-    DIFF 			= enum.auto()	# '!='
+    NOT 			= '!'
+    LT				= '<'
+    GT 				= '>'
+    LTEQ 			= '<='
+    GTEQ 			= '>='
+    OR 				= '||'
+    AND 			= '&&'
+    EQUAL 			= '=='
+    DIFF 			= '!='
     #operadores aritmeticos
-    SOMA		 	= enum.auto()	# '+'
-    SUBT 			= enum.auto()	# '-'
-    MULT 			= enum.auto()	# '*'
-    DIV 			= enum.auto()	# '/'
-    MODU			= enum.auto()	# '%'
-    ATRIB 			= enum.auto()	# '='
+    SOMA		 	= '+'
+    SUBT 			= '-'
+    MULT 			= '*'
+    DIV 			= '/'
+    MODU			= '%'
+    ATRIB 			= '='
     # marcadores
-    ABREPAR 		= enum.auto()	# '('
-    FECHAPAR 		= enum.auto()	# ')'
-    ABRECHAVE 		= enum.auto()	# '{'
-    FECHACHAVE 		= enum.auto()	# '}'
-    VIRGULA 		= enum.auto()	# ','
-    PTOEVIRGULA		= enum.auto()	# ';'   
-    IDENT 			= enum.auto()	# [a-zA-Z][a-zA-Z0-9]*
-    STRING 			= enum.auto()	# \"(\\.|[^\\"])*\"
-    NUMINT 			= enum.auto()	# [0-9]+
-    NUMFLOAT 		= enum.auto()	# [0-9]*'.'[0-9]+
+    ABREPAR 		= '('
+    FECHAPAR 		= ')'
+    ABRECHAVE 		= '{'
+    FECHACHAVE 		= '}'
+    VIRGULA 		= ','
+    PTOEVIRGULA		= ';'
+    IDENT 			= 'identifier'	# [a-zA-Z][a-zA-Z0-9]*
+    STRING 			= 'string'	    # \"(\\.|[^\\"])*\"
+    NUMINT 			= 'integer'	    # [0-9]+
+    NUMFLOAT 		= 'real'	    # [0-9]*'.'[0-9]+
 
 class Lexer:
 
