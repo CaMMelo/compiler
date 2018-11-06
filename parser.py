@@ -57,8 +57,10 @@ class Parser:
     def type(self):
         if self.current_token == Token.INT:
             self.consume_token(Token.INT)
+            return 'int'
         else:
             self.consume_token(Token.FLOAT)
+            return 'float'
     
     def bloco(self):
         self.consume_token(Token.ABRECHAVE)
@@ -102,22 +104,36 @@ class Parser:
             self.consume_token(Token.PTOEVIRGULA)
     
     def declaration(self):
-        self.type()
-        self.ident_list()
+        tipo = self.type()
+        vars = self.ident_list()
         self.consume_token(Token.PTOEVIRGULA)
+
+        for v in vars:
+            if v not in self.symbol_table:
+                self.symbol_table[v] = tipo
+            else:
+                raise ParseError(f'redefinition of var \'{v}\'', self.lexer.x, self.lexer.y)
     
     def ident_list(self):
-        
+
+        var = self.lexer.lexeme
         self.consume_token(Token.IDENT)
-        self.resto_ident_list()
+        vars = self.resto_ident_list()
+        vars.append(var)
+        return vars
     
     def resto_ident_list(self):
+        vars = []
         if self.current_token == Token.VIRGULA:
             self.consume_token(Token.VIRGULA)
+            var = self.lexer.lexeme
             self.consume_token(Token.IDENT)
-            self.resto_ident_list()
+            vars = self.resto_ident_list()
         else:
-            pass
+            return vars
+        
+        vars.append(var)
+        return vars
     
     def for_stmt(self):
         self.consume_token(Token.FOR)
@@ -351,3 +367,4 @@ class Parser:
             self.consume_token(Token.EOF)
         except ParseError as error:
             print(error)
+            self.symbol_table = {}

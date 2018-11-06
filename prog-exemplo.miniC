@@ -17,11 +17,15 @@ int main() {
         // encontra o menor fator
 	    for (div = 2; num % div; div = div + 1);
 
+		int variavel;
+
 	    print(div);
 	    num = num / div;
 	    if (num > 1)
 	       print(" * ");
 	}
+
+	int variavel;
 	
 	return 0;
 }
