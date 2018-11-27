@@ -108,11 +108,16 @@ class Parser:
         vars = self.ident_list()
         self.consume_token(Token.PTOEVIRGULA)
 
+        comandos = []
+
         for v in vars:
             if v not in self.symbol_table:
                 self.symbol_table[v] = tipo
+                comandos.append(('=', v, 0, None))
             else:
                 raise ParseError(f'redefinition of symbol \'{v}\'', self.lexer.x, self.lexer.y)
+        
+        return comandos
     
     def ident_list(self):
 
@@ -219,6 +224,7 @@ class Parser:
     def atrib(self):
         a = self.or_()
         b = self.resto_atrib()
+        
         if not(a or b):
             raise ParseError(f'missing lvalue.', self.lexer.x, self.lexer.y)
     

@@ -84,8 +84,7 @@ class Lexer:
                     self._x-=1
                 self.file.seek(-1, 1)
 
-            # act
-
+            # take action
             action = get_action(self.current_state)
 
             if action == 0: # the default action is to ignore

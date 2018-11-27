@@ -9,5 +9,8 @@ class MiniCVM:
         self.vars = {}
         self.instructions = {}
     
-    def exec(self, list_of_instructions):
-        pass
+    def exec(self, loi):
+
+        for command in loi:
+            instr, a, b, c = command
+            self.instructions[instr](a, b, c)
