@@ -15,14 +15,14 @@ class ParseError(Exception):
 def temp_generator():
     i = 0
     while True:
-        name = 'temp_' + str(i)
+        name = 'temp' + str(i)
         i += 1
         yield name
 
 def label_generator():
     i = 0
     while True:
-        label = 'label_' + str(i)
+        label = 'label' + str(i)
         i += 1
         yield label
 
@@ -236,86 +236,109 @@ class Parser:
             pass
     
     def expr(self):
-        self.atrib()
+        return self.atrib()
     
     def atrib(self):
-        a = self.or_()
-        b = self.resto_atrib()
+        is_llo, codo, tempo = self.or_()
+        is_llr, codr, _ =  = self.resto_atrib(tempo)
         
-        if not(a or b):
+        if not(is_llo or is_llr):
             raise ParseError(f'missing lvalue.', self.lexer.x, self.lexer.y)
+        
+        return codo + codr
+
     
-    def resto_atrib(self):
+    def resto_atrib(self, valor):
+        temp = self.next_temp()
         if self.current_token == Token.ATRIB:
             self.consume_token(Token.ATRIB)
-            self.atrib()
+            _, cod, _ = self.atrib()
         else:
-            return True
-        return False
+            return (True, [], temp)
+        comando = ('=', temp, valor, None)
+        return (False, cod.append(comando), temp)
     
     def or_(self):
-        a = self.and_()
-        b = self.resto_or()
-        return a and b
+        is_lla, coda, tempa = self.and_()
+        is_llr, codr, tempr =  = self.resto_or(tempa)
+        return (is_lla and is_llr, coda + codr, tempr)
 
-    def resto_or(self):
+    def resto_or(self, valor):
+        temp = self.next_temp()
         if self.current_token == Token.OR:
             self.consume_token(Token.OR)
-            self.and_()
-            self.resto_or()
+            _, coda, tempa = self.and_()
+            _, codr, _ = self.resto_or()
         else:
-            return True
-        return False
+            return (True, [], temp)
+        comando = ('or', temp, valor, tempa)
+        coda.append(comando)
+        return (False, coda + codr, temp)
     
     def and_(self):
-        a = self.not_()
-        b = self.resto_and()
-        return a and b
+        is_lln, codn, tempn = self.not_()
+        is_llr, codr, tempr = self.resto_and(tempn)
+        return (is_lln and is_llr, codn + codr, tempr)
     
-    def resto_and(self):
+    def resto_and(self, valor):
+        temp = self.next_temp()
         if self.current_token == Token.AND:
             self.consume_token(Token.AND)
-            self.not_()
-            self.resto_and()
+            _, codn, tempn = self.not_()
+            _, codr, _ = self.resto_and(valor)
         else:
-            return True
-        return False
+            return (True, [], temp)
+        comando = ('and', temp, valor, tempn)
+        codn.append(comando)
+        return (False, codn + codr, temp)
     
     def not_(self):
+        temp = self.next_temp()
         if self.current_token == Token.NOT:
             self.consume_token(Token.NOT)
-            self.not_()
+            is_left_value, cod, tempn = self.not_()
         else:
             return self.rel()
-        return False
+        comando = ('!', temp, tempn, None)
+        return (False, cod.append(comando), temp)
     
     def rel(self):
-        a = self.add()
-        b = self.resto_rel()
-        return a and b
+        is_lla, coda, tempa = self.add()
+        is_llr, codr, tempr = self.resto_rel(tempa)
+        return (is_lla and is_llr, coda + codr, tempr)
     
-    def resto_rel(self):
+    def resto_rel(self, valor):
+        temp = self.next_temp()
+
         if self.current_token == Token.EQUAL:
+            op = '=='
             self.consume_token(Token.EQUAL)
-            self.add()
+            _, cod, tempa = self.add()
         elif self.current_token == Token.DIFF:
+            op = '!='
             self.consume_token(Token.DIFF)
-            self.add()
+            _, cod, tempa = self.add()
         elif self.current_token == Token.GT:
+            op = '>'
             self.consume_token(Token.GT)
-            self.add()
+            _, cod, tempa = self.add()
         elif self.current_token == Token.GTEQ:
+            op = '>='
             self.consume_token(Token.GTEQ)
-            self.add()
+            _, cod, tempa = self.add()
         elif self.current_token == Token.LT:
+            op = '<'
             self.consume_token(Token.GT)
-            self.add()
+            _, cod, tempa = self.add()
         elif self.current_token == Token.LTEQ:
+            op = '<='
             self.consume_token(Token.GTEQ)
-            self.add()
+            _, cod, tempa = self.add()
         else:
-            return True
-        return False
+            return (True, [], temp)
+        
+        comando = (op, temp, valor, tempa)
+        return (False, cod.append(comando), temp)
     
     def add(self):
         is_llm, codm, tempm = self.mult()
