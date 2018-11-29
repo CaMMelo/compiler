@@ -318,23 +318,30 @@ class Parser:
         return False
     
     def add(self):
-        a = self.mult()
-        b = self.resto_add()
-        return a and b
+        is_llm, codm, tempm = self.mult()
+        is_llr, codr, tempr = self.resto_add(tempm)
+        
+        return (is_llm and is_llr, codm + codr, tempr)
     
-    def resto_add(self):
+    def resto_add(self, valor):
+        temp = self.next_temp()
 
         if self.current_token == Token.SOMA:
+            op = '+'
             self.consume_token(Token.SOMA)
-            self.mult()
-            self.resto_add()
+            _, codu, tempu = self.mult()
+            _, codr, _ = self.resto_add(valor)
         elif self.current_token == Token.SUBT:
+            op = '-'
             self.consume_token(Token.SUBT)
-            self.mult()
-            self.resto_add()
+            _, codu, tempu = self.mult()
+            _, codr, _ = self.resto_add(valor)
         else:
-            return True
-        return False
+            return (True, [], temp)
+        
+        comando = (op, temp, valor, tempu)
+        codu.append(comando)
+        return (False, codu + codr, temp)
     
     def mult(self):
         is_lvu, codu, tempu = self.uno()
