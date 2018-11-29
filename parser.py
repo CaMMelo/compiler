@@ -214,11 +214,25 @@ class Parser:
             pass
     
     def while_stmt(self):
+        inicio, fim = self.next_label(), self.next_label()
+
         self.consume_token(Token.WHILE)
         self.consume_token(Token.ABREPAR)
-        self.expr()
+        expr, res = self.expr()
         self.consume_token(Token.FECHAPAR)
-        self.stmt()
+        bloco = self.stmt(inicio, fim)
+
+        code = [
+            ('label', inicio, None, None)
+        ]
+
+        code = code + expr
+        code.append( ('if', res, None, fim) )
+        code = code + bloco
+        code.append( ('jump', inicio, None, None) )
+        code.append( ('label', fim, None, None) )
+
+        return code
     
     def if_stmt(self):
         self.consume_token(Token.IF)
@@ -240,12 +254,12 @@ class Parser:
     
     def atrib(self):
         is_llo, codo, tempo = self.or_()
-        is_llr, codr, _ =  = self.resto_atrib(tempo)
+        is_llr, codr, tempr =  = self.resto_atrib(tempo)
         
         if not(is_llo or is_llr):
             raise ParseError(f'missing lvalue.', self.lexer.x, self.lexer.y)
         
-        return codo + codr
+        return codo + codr, tempr
 
     
     def resto_atrib(self, valor):
