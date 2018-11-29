@@ -12,13 +12,30 @@ class ParseError(Exception):
     def __str__(self):
         return f'ERROR: ({self.line}, {self.col}): ' + super().__str__()
 
+def temp_generator():
+    i = 0
+    while True:
+        name = 'temp_' + str(i)
+        i += 1
+        yield name
+
+def label_generator():
+    i = 0
+    while True:
+        label = 'label_' + str(i)
+        i += 1
+        yield label
 
 class Parser:
 
     def __init__(self, filepath):
         
+        a = temp_generator()
+        b = label_generator()
         self.lexer = Lexer(filepath)
         self.symbol_table = {}
+        self.next_temp = lambda : next(a)
+        self.next_label = lambda : next(b)
     
     def consume_token(self, token):
 
@@ -320,56 +337,74 @@ class Parser:
         return False
     
     def mult(self):
-        a = self.uno()
-        b = self.resto_mult()
-        return a and b
+        is_lvu, codu, tempu = self.uno()
+        is_lvr, codr, tempr = self.resto_mult(tempu)
+
+        return (is_lvu and is_lvr, codu + codr, tempr)
     
-    def resto_mult(self):
+    def resto_mult(self, valor):
+        temp = self.next_temp()
+
         if self.current_token == Token.MULT:
+            op = '*'
             self.consume_token(Token.MULT)
-            self.uno()
-            self.resto_mult()
+            _, codu, tempu = self.uno()
+            _, codr, _ = self.resto_mult(valor)
         elif self.current_token == Token.DIV:
+            op = '/'
             self.consume_token(Token.DIV)
-            self.uno()
-            self.resto_mult()
+            _, codu, tempu = self.uno()
+            _, codr, _ = self.resto_mult(valor)
         elif self.current_token == Token.MODU:
+            op = '%'
             self.consume_token(Token.MODU)
-            self.uno()
-            self.resto_mult()
+            _, codu, tempu = self.uno()
+            _, codr, _ = self.resto_mult(valor)
         else:
-            return True
-        return False
+            return (True, [], valor)
+        
+        comando = (op, temp, valor, tempu)
+        codu.append(comando)
+        return (False, codu + codr, temp)
     
     def uno(self):
+        temp = self.next_temp()
+
         if self.current_token == Token.SOMA:
+            op = '+'
             self.consume_token(Token.SOMA)
-            self.uno()
+            is_left_value, cod, ident = self.uno()
         elif self.current_token == Token.SUBT:
+            op = '-'
             self.consume_token(Token.SUBT)
-            self.uno()
+            is_left_value, cod, ident = self.uno()
         else:
             return self.fator()
-        return False
+        
+        cod.append((op, temp, ident, 0))
+        return (False, cod, temp)
     
     def fator(self):
+        is_left_value = False
+        temp = self.next_temp()
+        ident = self.lexer.lexeme
+        
         if self.current_token == Token.NUMINT:
             self.consume_token(Token.NUMINT)
         elif self.current_token == Token.NUMFLOAT:
             self.consume_token(Token.NUMFLOAT)
         elif self.current_token == Token.IDENT:
-            ident = self.lexer.lexeme
             self.consume_token(Token.IDENT)
-
             if ident not in self.symbol_table:
                 raise ParseError(f'symbol \'{ident}\' was not defined.', self.lexer.x, self.lexer.y)
 
-            return True
+            is_left_value = True
         else:
             self.consume_token(Token.ABREPAR)
             self.atrib()
             self.consume_token(Token.FECHAPAR)
-        return False
+        
+        return (is_left_value, [('=', temp, ident, None), ], temp)
         
     def parse(self):
         try:
