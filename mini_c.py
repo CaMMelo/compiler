@@ -4,4 +4,7 @@ from parser import Parser
 
 if __name__ == '__main__':
 	parser = Parser(argv[1])
-	parser.parse()
+	codigo = parser.parse()
+
+	for c in codigo:
+		print(c)

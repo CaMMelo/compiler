@@ -26,6 +26,7 @@ def label_generator():
         i += 1
         yield label
 
+
 class Parser:
 
     def __init__(self, filepath):
@@ -45,31 +46,43 @@ class Parser:
             raise ParseError(f'expected \'{token.value}\' but got \'{self.lexer.lexeme}\'.', 
                 self.lexer.x, self.lexer.y)
     
-    def function(self):
+    def function(self, inicio, fim):
         self.type()
         self.consume_token(Token.IDENT)
         self.consume_token(Token.ABREPAR)
-        self.arg_list()
+        args = self.arg_list()
         self.consume_token(Token.FECHAPAR)
-        self.bloco()
+        cod = self.bloco(inicio, fim)
+
+        return args + cod
     
     def arg_list(self):
         if self.current_token in first['arg']:
-            self.arg()
-            self.resto_arg_list()
+            a = self.arg()
+            b = self.resto_arg_list()
+            return a + b
         else:
-            pass
+            return []
     
     def arg(self):
-        self.type()
+        tipo = self.type()
+        var = self.lexer.lexeme
         self.consume_token(Token.IDENT)
+
+        if var not in self.symbol_table:
+            self.symbol_table[var] = tipo
+        else:
+            raise ParseError(f'redefinition of symbol \'{v}\'', self.lexer.x, self.lexer.y)
+        
+        return [('=', var, 0, None),]
+
     
     def resto_arg_list(self):
         if self.current_token == Token.VIRGULA:
             self.consume_token(Token.VIRGULA)
-            self.arg_list()
+            return self.arg_list()
         else:
-            pass
+            return []
 
     def type(self):
         if self.current_token == Token.INT:
@@ -79,46 +92,57 @@ class Parser:
             self.consume_token(Token.FLOAT)
             return 'float'
     
-    def bloco(self):
+    def bloco(self, inicio, fim):
         self.consume_token(Token.ABRECHAVE)
-        self.stmt_list()
+        cod = self.stmt_list(inicio, fim)
         self.consume_token(Token.FECHACHAVE)
+
+        return cod
     
-    def stmt_list(self):
+    def stmt_list(self, inicio, fim):
         if self.current_token in first['stmt']:
-            self.stmt()
-            self.stmt_list()
+            a = self.stmt(inicio, fim)
+            b = self.stmt_list(inicio, fim)
+
+            print('b') if not b else print('bok')
+            print('a') if not a else print('aok')
+            return a + b
         else:
-            pass
+            return []
     
-    def stmt(self):
+    def stmt(self, inicio, fim):
         if self.current_token in first['for_stmt']:
-            self.for_stmt()
+            return self.for_stmt()
         elif self.current_token in first['io_stmt']:
-            self.io_stmt()
+            return self.io_stmt()
         elif self.current_token in first['while_stmt']:
-            self.while_stmt()
+            return self.while_stmt()
         elif self.current_token in first['expr']:
-            self.expr()
+            cod, _ = self.expr()
             self.consume_token(Token.PTOEVIRGULA)
+            return cod
         elif self.current_token in first['if_stmt']:
-            self.if_stmt()
+            return self.if_stmt(inicio, fim)
         elif self.current_token in first['bloco']:
-            self.bloco()
+            return self.bloco(inicio, fim)
         elif self.current_token in first['declaration']:
-            self.declaration()
+            return self.declaration()
         elif self.current_token == Token.BREAK:
             self.consume_token(Token.BREAK)
             self.consume_token(Token.PTOEVIRGULA)
+            return [('jump', fim, None, None),]
         elif self.current_token == Token.CONTINUE:
             self.consume_token(Token.CONTINUE)
             self.consume_token(Token.PTOEVIRGULA)
+            return [('jump', inicio, None, None),]
         elif self.current_token == Token.RETURN:
             self.consume_token(Token.RETURN)
-            self.fator()
+            _, cod, res = self.fator()
             self.consume_token(Token.PTOEVIRGULA)
+            return []
         else:
             self.consume_token(Token.PTOEVIRGULA)
+            return []
     
     def declaration(self):
         tipo = self.type()
@@ -158,43 +182,78 @@ class Parser:
         return vars
     
     def for_stmt(self):
+        inicio = self.next_label()
+        fim = self.next_label()
+        code = []
+
         self.consume_token(Token.FOR)
         self.consume_token(Token.ABREPAR)
-        self.opt_expr()
+        expr_init, _ = self.opt_expr()
         self.consume_token(Token.PTOEVIRGULA)
-        self.opt_expr()
+        expr_cond, res_cond = self.opt_expr()
         self.consume_token(Token.PTOEVIRGULA)
-        self.opt_expr()
+        expr_inc, _ = self.opt_expr()
         self.consume_token(Token.FECHAPAR)
-        self.stmt()
+        bloco = self.stmt(inicio, fim)
+
+
+        code += expr_init
+        code.append(('label', inicio, None, None))
+        code += expr_cond
+        code.append(('if', res_cond, None, fim))
+        code += bloco
+        code += expr_inc
+        code.append(('jump', inicio, None, None))
+        code.append(('label', fim, None, None))
+
+        return code
+        
     
     def opt_expr(self):
         if self.current_token in first['expr']:
-            self.expr()
+            return self.expr()
         else:
-            pass
+            return []
     
     def io_stmt(self):
         if self.current_token == Token.SCAN:
             self.consume_token(Token.SCAN)
             self.consume_token(Token.ABREPAR)
+            string = self.lexer.lexeme
             self.consume_token(Token.STRING)
             self.consume_token(Token.VIRGULA)
+            var = self.lexer.lexeme
             self.consume_token(Token.IDENT)
             self.consume_token(Token.FECHAPAR)
             self.consume_token(Token.PTOEVIRGULA)
+
+            if var not in self.symbol_table:
+                raise ParseError(f'symbol \'{ident}\' was not defined.', self.lexer.x, self.lexer.y)
+
+            code = [
+                ('call', 'print', string, None),
+                ('call', 'scan', var, None)
+            ]
+
+            return code
+
         else:
             self.consume_token(Token.PRINT)
             self.consume_token(Token.ABREPAR)
-            self.out_list()
+            cod = self.out_list()
             self.consume_token(Token.FECHAPAR)
             self.consume_token(Token.PTOEVIRGULA)
+
+            return cod
     
     def out_list(self):
-        self.out()
-        self.resto_out_list()
+        cod = self.out()
+        codr = self.resto_out_list()
+
+        return cod + codr
     
     def out(self):
+        ident = self.lexer.lexeme
         if self.current_token == Token.STRING:
             self.consume_token(Token.STRING)
         elif self.current_token == Token.IDENT:
@@ -203,18 +262,23 @@ class Parser:
             self.consume_token(Token.NUMINT)
         else:
             self.consume_token(Token.NUMFLOAT)
+
+        return [('call', 'print', ident, None), ]
     
     def resto_out_list(self):
         
         if self.current_token == Token.VIRGULA:
             self.consume_token(Token.VIRGULA)
-            self.out()
-            self.resto_out_list()
+            cod = self.out()
+            codr = self.resto_out_list()
+            return cod + codr
         else:
-            pass
+            return []
     
     def while_stmt(self):
-        inicio, fim = self.next_label(), self.next_label()
+        inicio = self.next_label()
+        fim = self.next_label()
+        code = []
 
         self.consume_token(Token.WHILE)
         self.consume_token(Token.ABREPAR)
@@ -222,10 +286,7 @@ class Parser:
         self.consume_token(Token.FECHAPAR)
         bloco = self.stmt(inicio, fim)
 
-        code = [
-            ('label', inicio, None, None)
-        ]
-
+        code.append(('label', inicio, None, None))
         code = code + expr
         code.append( ('if', res, None, fim) )
         code = code + bloco
@@ -234,47 +295,62 @@ class Parser:
 
         return code
     
-    def if_stmt(self):
+    def if_stmt(self, inicio, fim):
+        fim_if = self.next_label()
+        false = self.next_label()
+        code = []
+
         self.consume_token(Token.IF)
         self.consume_token(Token.ABREPAR)
-        self.expr()
+        expr, res = self.expr()
         self.consume_token(Token.FECHAPAR)
-        self.stmt()
-        self.else_part()
+        bloco_true = self.stmt(inicio, fim)
+        bloco_false = self.else_part()
+
+
+        code = code + expr
+        code.append(('if', res, None, false))
+        code = code + bloco_true
+        code.append(('jump', fim_if, None, None))
+        code.append(('label', false, None, None))
+        code = code + bloco_false
+        code.append(('label', fim_if, None, None))
+
+        return code
     
     def else_part(self):
         if self.current_token == Token.ELSE:
             self.consume_token(Token.ELSE)
-            self.stmt()
+            return self.stmt(inicio, fim)
         else:
-            pass
+            return []
     
     def expr(self):
         return self.atrib()
     
     def atrib(self):
         is_llo, codo, tempo = self.or_()
-        is_llr, codr, tempr =  = self.resto_atrib(tempo)
+        is_llr, codr, tempr = self.resto_atrib(tempo)
         
         if not(is_llo or is_llr):
             raise ParseError(f'missing lvalue.', self.lexer.x, self.lexer.y)
         
         return codo + codr, tempr
 
-    
     def resto_atrib(self, valor):
-        temp = self.next_temp()
         if self.current_token == Token.ATRIB:
             self.consume_token(Token.ATRIB)
-            _, cod, _ = self.atrib()
+            cod, res = self.atrib()
         else:
-            return (True, [], temp)
-        comando = ('=', temp, valor, None)
-        return (False, cod.append(comando), temp)
+            return (True, [], valor)
+
+        cod.append(('=', valor, res, None))
+        return (False, cod, res)
     
     def or_(self):
         is_lla, coda, tempa = self.and_()
-        is_llr, codr, tempr =  = self.resto_or(tempa)
+        is_llr, codr, tempr = self.resto_or(tempa)
+
         return (is_lla and is_llr, coda + codr, tempr)
 
     def resto_or(self, valor):
@@ -282,9 +358,9 @@ class Parser:
         if self.current_token == Token.OR:
             self.consume_token(Token.OR)
             _, coda, tempa = self.and_()
-            _, codr, _ = self.resto_or()
+            _, codr, _ = self.resto_or(valor)
         else:
-            return (True, [], temp)
+            return (True, [], valor)
         comando = ('or', temp, valor, tempa)
         coda.append(comando)
         return (False, coda + codr, temp)
@@ -301,7 +377,7 @@ class Parser:
             _, codn, tempn = self.not_()
             _, codr, _ = self.resto_and(valor)
         else:
-            return (True, [], temp)
+            return (True, [], valor)
         comando = ('and', temp, valor, tempn)
         codn.append(comando)
         return (False, codn + codr, temp)
@@ -312,9 +388,10 @@ class Parser:
             self.consume_token(Token.NOT)
             is_left_value, cod, tempn = self.not_()
         else:
-            return self.rel()
-        comando = ('!', temp, tempn, None)
-        return (False, cod.append(comando), temp)
+            res = self.rel()
+            return res
+        cod.append(('!', temp, tempn, None))
+        return (False, cod, temp)
     
     def rel(self):
         is_lla, coda, tempa = self.add()
@@ -349,10 +426,10 @@ class Parser:
             self.consume_token(Token.GTEQ)
             _, cod, tempa = self.add()
         else:
-            return (True, [], temp)
+            return True, [], valor
         
-        comando = (op, temp, valor, tempa)
-        return (False, cod.append(comando), temp)
+        cod.append((op, temp, valor, tempa))
+        return (False, cod, temp)
     
     def add(self):
         is_llm, codm, tempm = self.mult()
@@ -364,21 +441,25 @@ class Parser:
         temp = self.next_temp()
 
         if self.current_token == Token.SOMA:
-            op = '+'
             self.consume_token(Token.SOMA)
             _, codu, tempu = self.mult()
             _, codr, _ = self.resto_add(valor)
+
+            comando = ('+', temp, valor, tempu)
+            codu.append(comando)
+            return False, codu + codr, temp
+
         elif self.current_token == Token.SUBT:
-            op = '-'
             self.consume_token(Token.SUBT)
             _, codu, tempu = self.mult()
             _, codr, _ = self.resto_add(valor)
+
+            comando = ('-', temp, valor, tempu)
+            codu.append(comando)
+            return False, codu + codr, temp
+
         else:
-            return (True, [], temp)
-        
-        comando = (op, temp, valor, tempu)
-        codu.append(comando)
-        return (False, codu + codr, temp)
+            return True, [], valor
     
     def mult(self):
         is_lvu, codu, tempu = self.uno()
@@ -390,26 +471,34 @@ class Parser:
         temp = self.next_temp()
 
         if self.current_token == Token.MULT:
-            op = '*'
             self.consume_token(Token.MULT)
             _, codu, tempu = self.uno()
             _, codr, _ = self.resto_mult(valor)
+
+            comando = ('*', temp, valor, tempu)
+            codu.append(comando)
+            return False, codu + codr, temp
+
         elif self.current_token == Token.DIV:
-            op = '/'
             self.consume_token(Token.DIV)
             _, codu, tempu = self.uno()
             _, codr, _ = self.resto_mult(valor)
+
+            comando = ('/', temp, valor, tempu)
+            codu.append(comando)
+            return False, codu + codr, temp
+
         elif self.current_token == Token.MODU:
-            op = '%'
             self.consume_token(Token.MODU)
             _, codu, tempu = self.uno()
             _, codr, _ = self.resto_mult(valor)
+
+            comando = ('%', temp, valor, tempu)
+            codu.append(comando)
+            return False, codu + codr, temp
+
         else:
             return (True, [], valor)
-        
-        comando = (op, temp, valor, tempu)
-        codu.append(comando)
-        return (False, codu + codr, temp)
     
     def uno(self):
         temp = self.next_temp()
@@ -417,44 +506,45 @@ class Parser:
         if self.current_token == Token.SOMA:
             op = '+'
             self.consume_token(Token.SOMA)
-            is_left_value, cod, ident = self.uno()
         elif self.current_token == Token.SUBT:
             op = '-'
             self.consume_token(Token.SUBT)
-            is_left_value, cod, ident = self.uno()
         else:
             return self.fator()
-        
+
         cod.append((op, temp, ident, 0))
-        return (False, cod, temp)
+        return False, cod, temp
     
     def fator(self):
-        is_left_value = False
         temp = self.next_temp()
         ident = self.lexer.lexeme
         
         if self.current_token == Token.NUMINT:
             self.consume_token(Token.NUMINT)
+            return False, [('=', temp, ident, None)], temp
         elif self.current_token == Token.NUMFLOAT:
             self.consume_token(Token.NUMFLOAT)
+            return False, [('=', temp, ident, None)], temp
         elif self.current_token == Token.IDENT:
             self.consume_token(Token.IDENT)
             if ident not in self.symbol_table:
                 raise ParseError(f'symbol \'{ident}\' was not defined.', self.lexer.x, self.lexer.y)
-
-            is_left_value = True
+            
+            return True, [], ident
         else:
             self.consume_token(Token.ABREPAR)
-            self.atrib()
+            cod, res = self.atrib()
             self.consume_token(Token.FECHAPAR)
-        
-        return (is_left_value, [('=', temp, ident, None), ], temp)
+
+            cod.append(('=', temp, res, None))
+            return False, cod, temp
         
     def parse(self):
         try:
             self.current_token = self.lexer.get_token()
-            self.function()
+            cod = self.function(None, None)
             self.consume_token(Token.EOF)
+            return cod
         except ParseError as error:
             print(error)
             self.symbol_table = {}
