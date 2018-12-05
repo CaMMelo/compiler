@@ -1,15 +1,22 @@
+/*==============================
+**  Programa exemplo em miniC
+**
+**  - fatora um inteiro lido.
+**==============================*/
+
 int main() {
-	int a;
+	int n;
+	n = 20;
 
-	a = 10;
+	for(;n>=0;) {
+		print(n, ", ");
+		if(n == 3)
+			continue;
+		n = n - 1;
+	}
 
-	if(a > 0)
-		a = 0;
-
-	print("INICIO DO WHILE");
-	while(a >= 0) {
-		print(a);
-		a = a - 1;
+	while(1) {
+		print("SE FUDEU!");
 	}
 
 	return 0;
