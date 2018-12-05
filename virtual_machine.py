@@ -54,7 +54,7 @@ class MiniCVM:
 
     def atrib(self, a, b, c):
         b = self.avalia(b)
-        self.symbol_table[a] = b, int
+        self.symbol_table[a] = b, float
 
     def label(self, a, b, c):
         pass

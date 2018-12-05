@@ -156,6 +156,10 @@ class Lexer:
             if action == 33:
                 return Token.IDENT
             if action == 34:
+                self.lexeme = self.lexeme.strip('"')
+                self.lexeme = self.lexeme.replace('\\n', '\n')
+                self.lexeme = self.lexeme.replace('\\t', '\t')
+                self.lexeme = self.lexeme.replace('\\\\', '\\')
                 return Token.STRING
             if action == 35:
                 return Token.NUMINT

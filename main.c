@@ -7,17 +7,9 @@
 int main() {
 	int n;
 	n = 20;
-
 	for(;n>=0;) {
-		print(n, ", ");
-		if(n == 3)
-			continue;
+		print(n, "\n");
 		n = n - 1;
 	}
-
-	while(1) {
-		print("SE FUDEU!");
-	}
-
 	return 0;
 }
