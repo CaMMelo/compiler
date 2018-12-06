@@ -1,3 +1,5 @@
+import os
+
 # instruction is: (operation, A, B, C)
 
 def operation(foo):
@@ -19,26 +21,26 @@ class MiniCVM:
         self.labels = {}
 
         self.instructions = {
-        	'=': self.atrib,
+        	'='    : self.atrib,
         	'label': self.label,
-        	'if': self.if_,
-        	'jump': self.jump,
-        	'call': self.call,
-            'stop': self.stop,
-        	'or': self.or_,
-        	'and': self.and_,
-        	'not': self.not_,
-        	'==': self.equals,
-        	'!=': self.nequals,
-        	'>=': self.gteq,
-        	'<=': self.lteq,
-        	'>': self.gt,
-        	'<': self.lt,
-        	'+': self.sum,
-        	'-': self.subt,
-        	'*': self.mult,
-        	'%': self.mod,
-        	'/': self.div,
+        	'if'   : self.if_,
+        	'jump' : self.jump,
+        	'call' : self.call,
+            'stop' : self.stop,
+        	'or'   : self.or_,
+        	'and'  : self.and_,
+        	'not'  : self.not_,
+        	'=='   : self.equals,
+        	'!='   : self.nequals,
+        	'>='   : self.gteq,
+        	'<='   : self.lteq,
+        	'>'    : self.gt,
+        	'<'    : self.lt,
+        	'+'    : self.sum,
+        	'-'    : self.subt,
+        	'*'    : self.mult,
+        	'%'    : self.mod,
+        	'/'    : self.div,
         }
 
     def valor(self, name):
@@ -72,13 +74,12 @@ class MiniCVM:
         self.pc = -1
 
     def call(self, a, b, c):
-        
         if a == 'scan':
             tipo = self.tipo(b)
             try:
-                self.symbol_table[b] = tipo(input())
+                self.symbol_table[b] = tipo(input()), tipo
             except:
-                self.symbol_table[b] = tipo(0)
+                self.symbol_table[b] = tipo(0), tipo
         elif a == 'print':
             b = self.avalia(b)
             print(b, end='')
@@ -150,6 +151,7 @@ class MiniCVM:
         self.pc = 0
 
         for i, command in enumerate(self.program):
+            print(command)
             instr, a, _, _ = command
             if instr == 'label':
                 self.labels[a] = i

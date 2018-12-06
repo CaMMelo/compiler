@@ -13,7 +13,7 @@ first = {
         Token.PRINT, Token.SCAN, Token.WHILE, Token.ABRECHAVE ],
     'stmt': [ Token.NOT, Token.ABREPAR, Token.SOMA, 
         Token.SUBT, Token.PTOEVIRGULA, Token.IDENT, Token.NUMFLOAT, Token.NUMINT,
-        Token.BREAK, Token.CONTINUE, Token.FLOAT, Token.FOR, Token.IF, Token.INT,
+        Token.BREAK, Token.CONTINUE, Token.FOR, Token.IF,
         Token.PRINT, Token.SCAN, Token.WHILE, Token.ABRECHAVE, Token.RETURN ],
     'declaration': [ Token.FLOAT, Token.INT ],
     'ident_list': [ Token.IDENT ],

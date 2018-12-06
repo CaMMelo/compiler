@@ -40,7 +40,6 @@ class Parser:
         self.nivel = 0
     
     def consume_token(self, token):
-
         if self.current_token == token:
             self.current_token = self.lexer.get_token()
         else:
@@ -109,18 +108,19 @@ class Parser:
     
     def bloco(self, inicio, fim):
         self.nivel += 1
-
         self.consume_token(Token.ABRECHAVE)
         cod = self.stmt_list(inicio, fim)
         self.consume_token(Token.FECHACHAVE)
-
         self.nivel -= 1
-
         return cod
     
     def stmt_list(self, inicio, fim):
         if self.current_token in first['stmt']:
             a = self.stmt(inicio, fim)
+            b = self.stmt_list(inicio, fim)
+            return a + b
+        elif self.current_token in first['declaration']:
+            a = self.declaration()
             b = self.stmt_list(inicio, fim)
             return a + b
         else:
@@ -141,8 +141,6 @@ class Parser:
             return self.if_stmt(inicio, fim)
         elif self.current_token in first['bloco']:
             return self.bloco(inicio, fim)
-        elif self.current_token in first['declaration']:
-            return self.declaration()
         elif self.current_token == Token.BREAK:
             self.consume_token(Token.BREAK)
             self.consume_token(Token.PTOEVIRGULA)
