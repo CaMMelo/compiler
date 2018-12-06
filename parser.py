@@ -199,9 +199,7 @@ class Parser:
     def for_stmt(self):
         inicio = self.next_label()
         label_inc = self.next_label()
-        label_bloco = self.next_label()
         fim = self.next_label()
-        code = []
 
         self.consume_token(Token.FOR)
         self.consume_token(Token.ABREPAR)
@@ -212,17 +210,16 @@ class Parser:
         expr_inc, _ = self.opt_expr()
         self.consume_token(Token.FECHAPAR)
         bloco = self.stmt(label_inc, fim)
-
+        
+        code = []
         code += expr_init
         code.append(('label', inicio, None, None))
         code += expr_cond
-        code.append(('if', res_cond, label_bloco, fim))
+        code.append(('if', res_cond, None, fim))
+        code += bloco
         code.append(('label', label_inc, None, None))
         code += expr_inc
         code.append(('jump', inicio, None, None))
-        code.append(('label', label_bloco, None, None))
-        code += bloco
-        code.append(('jump', label_inc, None, None))
         code.append(('label', fim, None, None))
 
         return code
