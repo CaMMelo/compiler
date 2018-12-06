@@ -198,6 +198,8 @@ class Parser:
     
     def for_stmt(self):
         inicio = self.next_label()
+        label_inc = self.next_label()
+        label_bloco = self.next_label()
         fim = self.next_label()
         code = []
 
@@ -209,16 +211,18 @@ class Parser:
         self.consume_token(Token.PTOEVIRGULA)
         expr_inc, _ = self.opt_expr()
         self.consume_token(Token.FECHAPAR)
-        bloco = self.stmt(inicio, fim)
-
+        bloco = self.stmt(label_inc, fim)
 
         code += expr_init
         code.append(('label', inicio, None, None))
         code += expr_cond
-        code.append(('if', res_cond, None, fim))
-        code += bloco
+        code.append(('if', res_cond, label_bloco, fim))
+        code.append(('label', label_inc, None, None))
         code += expr_inc
         code.append(('jump', inicio, None, None))
+        code.append(('label', label_bloco, None, None))
+        code += bloco
+        code.append(('jump', label_inc, None, None))
         code.append(('label', fim, None, None))
 
         return code

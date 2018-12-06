@@ -151,7 +151,6 @@ class MiniCVM:
         self.pc = 0
 
         for i, command in enumerate(self.program):
-            print(command)
             instr, a, _, _ = command
             if instr == 'label':
                 self.labels[a] = i
